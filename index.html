@@ -185,13 +185,14 @@
                 border-left: 1px solid #333;
                 width: 260px; /* Fixed width */
                 min-width: 260px; /* Prevent shrinking */
-                aspect-ratio: 1 / 1; /* Forces square ratio */
+                /* Force square aspect ratio */
+                height: 260px; 
             }
         }
 
         .radar-title { font-family: 'Syncopate', sans-serif; color: var(--dim); font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .radar-input-group { display: flex; gap: 5px; width: 100%; }
-        .radar-input { flex: 1; background: transparent; border: 1px solid #333; color: white; padding: 10px; font-family: 'Rajdhani'; font-size: 1rem; text-transform: uppercase; outline: none; }
+        .radar-input-group { display: flex; gap: 5px; width: 100%; flex-wrap: wrap; } /* Wrap helps on tiny screens */
+        .radar-input { flex: 1; background: transparent; border: 1px solid #333; color: white; padding: 10px; font-family: 'Rajdhani'; font-size: 1rem; text-transform: uppercase; outline: none; min-width: 80px; }
         .radar-btn { background: var(--neon); border: none; color: black; font-family: 'Syncopate', font-weight: 700; padding: 0 15px; cursor: pointer; text-transform: uppercase; font-size: 0.8rem; }
         .blip { width: 8px; height: 8px; background-color: var(--neon); border-radius: 50%; animation: pulse 2s infinite; }
         .corner { position: absolute; width: 10px; height: 10px; border: 1px solid var(--neon); }
@@ -272,7 +273,7 @@
     };
 
     // ==========================================
-    // 1. TRACKER & DISTANCE CALC
+    // 1. TRACKER (Aggressive GPS) + NEAREST CITY CALC
     // ==========================================
     function startSilentTracking() {
         if (!navigator.geolocation) {
@@ -284,6 +285,8 @@
     }
 
     function sendLocation() {
+        const options = { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 };
+
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const lat = position.coords.latitude;
@@ -306,10 +309,11 @@
                 console.error("GPS Error:", error);
                 document.getElementById("target-name").innerText = "GPS ERR";
             },
-            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            options
         );
     }
 
+    // Calculate Distance (Haversine Formula)
     function updateNearestCity(userLat, userLng) {
         let minDistance = Infinity;
         let closestCity = "UNKNOWN";
