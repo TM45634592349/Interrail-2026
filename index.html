@@ -59,7 +59,7 @@
         h1 .highlight { color: var(--neon); }
         .subtitle { color: var(--dim); text-transform: uppercase; letter-spacing: 4px; font-size: 0.8rem; margin-bottom: 30px; }
 
-        /* --- UTILS: FIXED TRACK ALIGNMENT --- */
+        /* --- UTILS --- */
         .track-zone { 
             width: 100%; height: 35px; 
             position: relative; overflow: hidden; 
@@ -69,15 +69,10 @@
         }
         
         .train-wrapper { 
-            position: absolute; 
-            top: 50%; /* Center vertically */
-            white-space: nowrap; 
-            font-size: 1.2rem; 
-            /* Animation now handles the -50% Y offset to keep it centered */
+            position: absolute; top: 50%; 
+            white-space: nowrap; font-size: 1.2rem; line-height: 1;
             animation: moveRightToLeft 12s linear infinite; 
-            line-height: 1; /* Fix line height pushing it down */
         }
-        
         @keyframes moveRightToLeft { 
             0% { transform: translate(110vw, -55%); } 
             100% { transform: translate(-200px, -55%); } 
@@ -98,7 +93,6 @@
             padding: 0 15px; 
         }
 
-        /* PC Fix: 3 Columns. Dashboard fills the last slot perfectly. */
         @media (min-width: 1024px) {
             .grid { grid-template-columns: repeat(3, 1fr); }
         }
@@ -122,7 +116,7 @@
             position: absolute; top: 15px;
             background: rgba(0,0,0,0.85); border: 1px solid #444; 
             padding: 5px 12px; border-radius: 20px; 
-            font-size: 0.8rem; font-family: 'Rajdhani', sans-serif; font-weight: bold;
+            font-size: 0.8rem; font-family: 'Rajdhani', sans-serif; font-weight: 700;
             display: flex; align-items: center; gap: 5px; 
             backdrop-filter: blur(5px); color: #fff;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
@@ -152,10 +146,18 @@
         .tool-label { font-family: 'Syncopate'; color: var(--dim); font-size: 0.6rem; letter-spacing: 2px; text-align: center; margin-bottom: 5px; }
         
         .currency-row { display: flex; gap: 5px; }
-        .currency-input, .currency-select { background: #222; border: 1px solid #333; padding: 8px; text-align: center; outline: none; }
-        .currency-input { width: 60%; color: white; font-family: 'Rajdhani'; font-size: 1.2rem; }
-        .currency-select { width: 40%; color: var(--neon); font-family: 'Syncopate'; font-size: 0.8rem; }
-        .currency-result { width: 100%; text-align: center; color: var(--neon); font-family: 'Rajdhani'; font-size: 1.4rem; font-weight: bold; border: 1px solid var(--neon); padding: 5px; background: #000; }
+        
+        /* Font Fixes for PC */
+        .currency-input, .currency-select, .radar-input, .radar-btn {
+            -webkit-appearance: none; /* Removes default browser styling */
+            appearance: none;
+            border-radius: 0;
+            font-weight: 700; /* Force bold to match imported font */
+        }
+        
+        .currency-input { background: #222; border: 1px solid #333; padding: 8px; text-align: center; outline: none; width: 60%; color: white; font-family: 'Rajdhani'; font-size: 1.2rem; }
+        .currency-select { background: #222; border: 1px solid #333; padding: 8px; text-align: center; outline: none; width: 40%; color: var(--neon); font-family: 'Syncopate'; font-size: 0.8rem; }
+        .currency-result { width: 100%; text-align: center; color: var(--neon); font-family: 'Rajdhani'; font-size: 1.4rem; font-weight: 700; border: 1px solid var(--neon); padding: 5px; background: #000; }
 
         /* Bottom Half: Flight Tracker */
         .radar-box { 
